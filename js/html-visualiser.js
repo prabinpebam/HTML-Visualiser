@@ -6,8 +6,7 @@ $(function() {
 
 	$('#btnSubmit').on("click", function(){
 
-		$('#btnNew').show();
-		$('#elementHighlight').show();
+		$('#outputBar').show();
 		$('#output').show();
 		
 		$('#inputArea').hide();
@@ -72,7 +71,7 @@ $(function() {
 			$.each(invalidElements, function(index, value){
 				if(elementType==value){
 					currentElement.replaceWith(function(){
-						return $("<div data-elementtype='"+elementType+"' class='hv-highlighter hv-inactive "+value+"' />").append($(this).contents());
+						return $("<div data-elementtype='"+elementType+"' class='hv-highlighter hv-inactive "+value+" "+currentClass+ "' />").append($(this).contents());
 					});
 				}
 			});
@@ -83,14 +82,14 @@ $(function() {
 
 			if(elementType=="IMG"){
 				currentElement.replaceWith(function(){
-						return $("<div class='hv-highlighter image'>Image</div>").append($(this).contents());
+						return $("<div data-elementtype='IMG' class='hv-highlighter image "+currentClass+"'>Image</div>").append($(this).contents());
 					});
 			}
 
 			if(elementType=="INPUT"){
 				var inputType = currentElement.attr("type");
 				currentElement.replaceWith(function(){
-						return $("<div class='hv-highlighter INPUT "+inputType +" "+ currentClass +"'>Input Type - "+inputType+"</div>").append($(this).contents());
+						return $("<div data-elementtype='INPUT' class='hv-highlighter INPUT "+inputType +" "+ currentClass +"'>Input Type - "+inputType+"</div>").append($(this).contents());
 					});
 			}
 		});
@@ -113,21 +112,36 @@ $(function() {
 	);
 
 	$('#elementHighlight').on("keyup", function(){
+		$(".hv-highlighter").removeClass('hv-highlighted');
 
 		var elementSelector = $('#elementHighlight').val();
-		//var output = elementSelector.match(/label|span|a|select|option|textarea|form|input/gm);
+
+		var inputString = elementSelector,
+			newString = elementSelector;
+
+			var invalidEntries = inputString.match(/\blabel\b|\ba\b|\bimg\b|\bselect\b|\boption\b|\btextarea\b|\bform\b|\binput\b/gm);
+			
+			if (invalidEntries) {
+				var len = invalidEntries.length;
+				for(i=0;i<len;i++){
+				  var old = invalidEntries[i];
+				  var newVal = "div[data-elementtype="+old.toUpperCase()+"]";
+				  var exp = "\b"+old+"\b";
+				  var newExp = RegExp("\\b(" + old + ")", "gi");
+				  newString = newString.replace(newExp,newVal);  
+				}
+			}
+			console.log(newString);
 		
-		console.log(elementSelector);
 		
-		$(".hv-highlighter").removeClass('hv-highlighted');
-		$(elementSelector).addClass("hv-highlighted");
+		
+		$(newString).addClass("hv-highlighted");
 	});
 
 
 	$('#btnNew').on("click", function(){
 
-		$('#btnNew').hide();
-		$('#elementHighlight').hide();
+		$('#outputBar').hide();
 		$('#output').hide();
 		
 		$('#inputArea').show();
