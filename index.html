@@ -7,14 +7,16 @@
 </head>
 <body>
 	<div class="hv-container">
-		<h1>HTML Visualiser</h1>
-		<textarea id="htmlText" rows="20"></textarea>
-		<div id="btnSubmit" class="btn btn-primary">Submit</div>
-		<div id="output"></div>
-		
-	</div>
+		<div id="inputArea">
+			<h1>HTML Visualiser</h1>
+			<textarea id="htmlText" rows="20"></textarea>
+			<div id="btnSubmit" class="hv-btn hv-btn-primary hv-btn-large">Submit</div>
+		</div>
+		<div id="btnNew" class="hv-btn hv-btn-primary hv-btn-large" style="display:none;">New HTML</div>
+		<input id="elementHighlight" type="text" style="display:none;" placeholder="Enter identifier to highlight matching elements">
 
-	
+		<div id="output"></div>	
+	</div>
 	<script src="js/jquery-2.0.2.min.js"></script>
 	<script src="js/html-visualiser.js"></script>
 </body>

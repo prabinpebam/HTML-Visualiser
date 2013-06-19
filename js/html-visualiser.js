@@ -1,10 +1,18 @@
 
 $(function() {
 
-	var invalidElements = ['hv-label', 'SELECT', 'OPTION', 'TEXTAREA', 'FORM'];
+	var invalidElements = ['LABEL', 'SELECT', 'OPTION', 'TEXTAREA', 'FORM', 'A'];
 
 
 	$('#btnSubmit').on("click", function(){
+
+		$('#btnNew').show();
+		$('#elementHighlight').show();
+		$('#output').show();
+		
+		$('#inputArea').hide();
+
+
 
 		var htmlInput = $('#htmlText').val();
 		$('#output').html(htmlInput);
@@ -64,7 +72,7 @@ $(function() {
 			$.each(invalidElements, function(index, value){
 				if(elementType==value){
 					currentElement.replaceWith(function(){
-						return $("<div class='hv-highlighter "+value+"' />").append($(this).contents());
+						return $("<div data-elementtype='"+elementType+"' class='hv-highlighter hv-inactive "+value+"' />").append($(this).contents());
 					});
 				}
 			});
@@ -82,7 +90,7 @@ $(function() {
 			if(elementType=="INPUT"){
 				var inputType = currentElement.attr("type");
 				currentElement.replaceWith(function(){
-						return $("<div class='hv-highlighter INPUT "+inputType+"'>Input Type - "+inputType+"</div>").append($(this).contents());
+						return $("<div class='hv-highlighter INPUT "+inputType +" "+ currentClass +"'>Input Type - "+inputType+"</div>").append($(this).contents());
 					});
 			}
 		});
@@ -103,4 +111,26 @@ $(function() {
 		}
 		
 	);
+
+	$('#elementHighlight').on("keyup", function(){
+
+		var elementSelector = $('#elementHighlight').val();
+		//var output = elementSelector.match(/label|span|a|select|option|textarea|form|input/gm);
+		
+		console.log(elementSelector);
+		
+		$(".hv-highlighter").removeClass('hv-highlighted');
+		$(elementSelector).addClass("hv-highlighted");
+	});
+
+
+	$('#btnNew').on("click", function(){
+
+		$('#btnNew').hide();
+		$('#elementHighlight').hide();
+		$('#output').hide();
+		
+		$('#inputArea').show();
+	});
+
 });
