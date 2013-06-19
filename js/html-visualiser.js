@@ -1,7 +1,7 @@
 
 $(function() {
 
-	var invalidElements = ['LABEL', 'SELECT', 'OPTION', 'TEXTAREA', 'FORM', 'A'];
+	var invalidElements = ['LABEL', 'SELECT', 'OPTION', 'TEXTAREA', 'FORM', 'A', 'LEGEND', 'BUTTON'];
 
 
 	$('#btnSubmit').on("click", function(){
@@ -35,10 +35,7 @@ $(function() {
 				id = $(this).attr('id');
 				elementType = $(this).prop('tagName');
 
-			
-
-			//$(this).removeClass(currentClass);
-			$(this).addClass('hv-highlighter hv-inactive '+elementType);			
+			$(this).addClass('hv-highlighter hv-inactive '+elementType);		
 			$(this).contents().filter(function(){ return this.nodeType == 3; }).remove();
 
 			if(elementType){
@@ -47,6 +44,7 @@ $(function() {
 
 
 			if(id){
+				$(this).attr('id', id);
 				elementHeader +="<span class='hv-label id' title="+id+">#"+id+"</span>";
 			}
 			
@@ -71,7 +69,11 @@ $(function() {
 			$.each(invalidElements, function(index, value){
 				if(elementType==value){
 					currentElement.replaceWith(function(){
-						return $("<div data-elementtype='"+elementType+"' class='hv-highlighter hv-inactive "+value+" "+currentClass+ "' />").append($(this).contents());
+						if(id){
+							return $("<div id="+id+" data-elementtype='"+elementType+"' class='hv-highlighter hv-inactive "+value+" "+currentClass+ "' />").append($(this).contents());
+						}else{
+							return $("<div data-elementtype='"+elementType+"' class='hv-highlighter hv-inactive "+value+" "+currentClass+ "' />").append($(this).contents());
+						}
 					});
 				}
 			});
@@ -82,15 +84,23 @@ $(function() {
 
 			if(elementType=="IMG"){
 				currentElement.replaceWith(function(){
+					if(id){
+						return $("<div id="+id+" data-elementtype='IMG' class='hv-highlighter image "+currentClass+"'>Image</div>").append($(this).contents());
+					}else{
 						return $("<div data-elementtype='IMG' class='hv-highlighter image "+currentClass+"'>Image</div>").append($(this).contents());
-					});
+					}
+				});
 			}
 
 			if(elementType=="INPUT"){
 				var inputType = currentElement.attr("type");
 				currentElement.replaceWith(function(){
+					if(id){
+						return $("<div id="+id+" data-elementtype='INPUT' class='hv-highlighter INPUT "+inputType +" "+ currentClass +"'>Input Type - "+inputType+"</div>").append($(this).contents());
+					}else{
 						return $("<div data-elementtype='INPUT' class='hv-highlighter INPUT "+inputType +" "+ currentClass +"'>Input Type - "+inputType+"</div>").append($(this).contents());
-					});
+					}
+				});
 			}
 		});
 	});
@@ -119,7 +129,7 @@ $(function() {
 		var inputString = elementSelector,
 			newString = elementSelector;
 
-			var invalidEntries = inputString.match(/\blabel\b|\ba\b|\bimg\b|\bselect\b|\boption\b|\btextarea\b|\bform\b|\binput\b/gm);
+			var invalidEntries = inputString.match(/\blabel\b|\ba\b|\blegend\b|\bbutton\b|\bimg\b|\bselect\b|\boption\b|\btextarea\b|\bform\b|\binput\b/gm);
 			
 			if (invalidEntries) {
 				var len = invalidEntries.length;
