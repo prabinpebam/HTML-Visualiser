@@ -1,7 +1,7 @@
 
 $(function() {
 
-	var invalidElements = ['LABEL', 'SELECT', 'OPTION', 'TEXTAREA', 'FORM'];
+	var invalidElements = ['hv-label', 'SELECT', 'OPTION', 'TEXTAREA', 'FORM'];
 
 
 	$('#btnSubmit').on("click", function(){
@@ -21,7 +21,7 @@ $(function() {
 
 				currentClass = '';
 				id = '';
-				elementHeader = '<div class="elementHeader-wrapper">';
+				elementHeader = '<div class="hv-elementHeader-wrapper">';
 				elementType = '';
 
 				currentClass = $(this).attr('class');
@@ -31,16 +31,16 @@ $(function() {
 			
 
 			//$(this).removeClass(currentClass);
-			$(this).addClass('highlighter inactive '+elementType);			
+			$(this).addClass('hv-highlighter hv-inactive '+elementType);			
 			$(this).contents().filter(function(){ return this.nodeType == 3; }).remove();
 
 			if(elementType){
-				elementHeader +="<span class='label element-type' title="+elementType+">"+elementType+"</span>";
+				elementHeader +="<span class='hv-label element-type' title="+elementType+">"+elementType+"</span>";
 			}
 
 
 			if(id){
-				elementHeader +="<span class='label id' title="+id+">#"+id+"</span>";
+				elementHeader +="<span class='hv-label id' title="+id+">#"+id+"</span>";
 			}
 			
 			if(currentClass){
@@ -49,11 +49,11 @@ $(function() {
 				
 				$.each(data, function(index, value){
 					if(value){
-						elementHeader += "<span class='label' title="+value+">."+value+"</span>";
+						elementHeader += "<span class='hv-label' title="+value+">."+value+"</span>";
 					}
 				});
 			}else{
-				elementHeader +="<span class='label'>- No Class -</span>";
+				elementHeader +="<span class='hv-label'>- No Class -</span>";
 			}
 
 			elementHeader += "</div>";
@@ -64,9 +64,8 @@ $(function() {
 			$.each(invalidElements, function(index, value){
 				if(elementType==value){
 					currentElement.replaceWith(function(){
-						return $("<div class='highlighter "+value+"' />").append($(this).contents());
+						return $("<div class='hv-highlighter "+value+"' />").append($(this).contents());
 					});
-
 				}
 			});
 
@@ -76,30 +75,30 @@ $(function() {
 
 			if(elementType=="IMG"){
 				currentElement.replaceWith(function(){
-						return $("<div class='highlighter image'>Image</div>").append($(this).contents());
+						return $("<div class='hv-highlighter image'>Image</div>").append($(this).contents());
 					});
 			}
 
 			if(elementType=="INPUT"){
 				var inputType = currentElement.attr("type");
 				currentElement.replaceWith(function(){
-						return $("<div class='highlighter INPUT "+inputType+"'>Input Type - "+inputType+"</div>").append($(this).contents());
+						return $("<div class='hv-highlighter INPUT "+inputType+"'>Input Type - "+inputType+"</div>").append($(this).contents());
 					});
 			}
 		});
 	});
 
-	$("#output").on("mouseenter", ".highlighter", function(){
-			$(".highlighter").removeClass('active');
-			$(this).addClass('active');
+	$("#output").on("mouseenter", ".hv-highlighter", function(){
+			$(".hv-highlighter").removeClass('hv-active');
+			$(this).addClass('hv-active');
 
 		}
 		
 	);
 
-	$("#output").on("mouseleave", ".highlighter", function(){
-			$(".highlighter").removeClass('active');
-			$(this).parent(".highlighter").addClass('active');
+	$("#output").on("mouseleave", ".hv-highlighter", function(){
+			$(".hv-highlighter").removeClass('hv-active');
+			$(this).parent(".hv-highlighter").addClass('hv-active');
 
 		}
 		
